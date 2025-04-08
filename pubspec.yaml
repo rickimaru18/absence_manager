@@ -8,13 +8,17 @@ environment:
   sdk: ^3.6.2
 
 dependencies:
+  dio: ^5.8.0+1
   flutter:
     sdk: flutter
+  json_annotation: ^4.9.0
 
 dev_dependencies:
+  build_runner: ^2.4.15
   flutter_test:
     sdk: flutter
   mocktail: ^1.0.4
+  json_serializable: ^6.9.4
 
 
 flutter:
