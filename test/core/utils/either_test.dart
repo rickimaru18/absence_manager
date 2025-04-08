@@ -8,6 +8,8 @@ void main() {
 
     expect(either.isLeft, true);
     expect(either.isRight, false);
+    expect(either.l, number);
+    expect(either.r, null);
 
     int? handledLeftData;
     Failure? handledRightData;
@@ -27,6 +29,8 @@ void main() {
 
     expect(either.isLeft, false);
     expect(either.isRight, true);
+    expect(either.l, null);
+    expect(either.r, failure);
 
     int? handledLeftData;
     Failure? handledRightData;
