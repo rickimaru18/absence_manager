@@ -2,6 +2,7 @@ import 'package:absence_manager/core/core.dart';
 import 'package:absence_manager/domain/domain.dart';
 import 'package:absence_manager/presentation/pages/home/home_page.dart';
 import 'package:absence_manager/presentation/widgets/cards/absence_card.dart';
+import 'package:absence_manager/presentation/widgets/forms/absence_filter_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -33,8 +34,11 @@ void main() {
   setUp(() {
     absencesUseCase = AbsencesUseCaseMock();
 
-    when(() => absencesUseCase.getAllAbsences())
-        .thenAnswer((_) async => Either<List<Absence>>.l(absences));
+    when(
+      () => absencesUseCase.getAllAbsences(
+        filter: any(named: 'filter'),
+      ),
+    ).thenAnswer((_) async => Either<List<Absence>>.l(absences));
   });
 
   tearDown(() {
@@ -51,7 +55,9 @@ void main() {
 
   group('[UI checks]', () {
     tearDown(() {
-      verify(() => absencesUseCase.getAllAbsences()).called(1);
+      verify(
+        () => absencesUseCase.getAllAbsences(),
+      ).called(1);
     });
 
     testWidgets(
@@ -60,6 +66,8 @@ void main() {
         await build(tester);
         await tester.pumpAndSettle();
 
+        expect(find.widgetWithText(ExpansionTile, 'Filter'), findsOneWidget);
+        expect(find.byType(AbsenceFilterForm), findsNothing);
         expect(find.byType(CenterLoader), findsNothing);
         expect(find.byType(TryAgainError), findsNothing);
         expect(find.byType(TryAgainEmpty), findsNothing);
@@ -85,6 +93,8 @@ void main() {
       (WidgetTester tester) async {
         await build(tester);
 
+        expect(find.widgetWithText(ExpansionTile, 'Filter'), findsOneWidget);
+        expect(find.byType(AbsenceFilterForm), findsNothing);
         expect(find.byType(CenterLoader), findsOneWidget);
       },
     );
@@ -100,6 +110,8 @@ void main() {
         await build(tester);
         await tester.pumpAndSettle();
 
+        expect(find.widgetWithText(ExpansionTile, 'Filter'), findsOneWidget);
+        expect(find.byType(AbsenceFilterForm), findsNothing);
         expect(find.widgetWithText(TryAgainError, error.error), findsOneWidget);
       },
     );
@@ -113,12 +125,51 @@ void main() {
         await build(tester);
         await tester.pumpAndSettle();
 
+        expect(find.widgetWithText(ExpansionTile, 'Filter'), findsOneWidget);
+        expect(find.byType(AbsenceFilterForm), findsNothing);
         expect(find.byType(TryAgainEmpty), findsOneWidget);
       },
     );
   });
 
   group('[Event checks]', () {
+    testWidgets(
+      'Can expand filter section',
+      (WidgetTester tester) async {
+        await build(tester);
+        await tester.pumpAndSettle();
+        await tester.tap(find.widgetWithText(ExpansionTile, 'Filter'));
+        await tester.pumpAndSettle();
+
+        expect(find.byType(AbsenceFilterForm), findsOneWidget);
+
+        verify(
+          () => absencesUseCase.getAllAbsences(),
+        ).called(1);
+      },
+    );
+
+    testWidgets(
+      'Tapping filter will fetch filtered data',
+      (WidgetTester tester) async {
+        await build(tester);
+        await tester.pumpAndSettle();
+        await tester.tap(find.widgetWithText(ExpansionTile, 'Filter'));
+        await tester.pumpAndSettle();
+        await tester.tap(find.widgetWithText(TextButton, 'Filter'));
+        await tester.pumpAndSettle();
+
+        expect(find.byType(AbsenceFilterForm), findsOneWidget);
+
+        verify(() => absencesUseCase.getAllAbsences()).called(1);
+        verify(
+          () => absencesUseCase.getAllAbsences(
+            filter: AbsenceFilter(),
+          ),
+        ).called(1);
+      },
+    );
+
     testWidgets(
       'Can pull-to-refresh absences list',
       (WidgetTester tester) async {
