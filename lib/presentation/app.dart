@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'pages/home/home_page.dart';
+import 'setup/router.dart';
+import 'setup/theme.dart';
 
 class App extends StatelessWidget {
   const App({
@@ -9,13 +10,10 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Absence Manager',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const HomePage(),
+      theme: theme,
+      routerConfig: router,
     );
   }
 }
