@@ -9,6 +9,7 @@ part 'home_page_state.freezed.dart';
 abstract class HomePageState with _$HomePageState {
   const factory HomePageState({
     @Default(<Absence>[]) List<Absence> absences,
+    AbsenceFilter? filter,
     Failure? error,
     @Default(false) bool isLoading,
   }) = _HomePageState;

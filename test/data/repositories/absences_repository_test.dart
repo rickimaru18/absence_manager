@@ -19,6 +19,12 @@ void main() {
   group('[getAbsences] tests', () {
     const int userId = 1;
 
+    final AbsenceFilter filter = AbsenceFilter(
+      type: AbsenceType.vacation,
+      startDate: DateTime.now(),
+      endDate: DateTime.now().add(const Duration(days: 1)),
+    );
+
     tearDown(() {
       final String memberTable = SupabaseTables.member.name;
 
@@ -28,6 +34,7 @@ void main() {
           queryParameters: <String, dynamic>{
             'select': '*,$memberTable:$memberTable!inner(*)',
             'userId': 'eq.$userId',
+            ...filter.toQueryParam()!,
           },
           jsonListDecoder: any(named: 'jsonListDecoder'),
         ),
@@ -62,6 +69,7 @@ void main() {
       ).thenAnswer((_) async => Either<List<Absence>>.l(absences));
 
       final Either<List<Absence>> result = await repository.getAbsences(
+        filter: filter,
         userId: userId,
       );
 
@@ -80,6 +88,7 @@ void main() {
       ).thenAnswer((_) async => Either<List<Absence>>.r(failure));
 
       final Either<List<Absence>> result = await repository.getAbsences(
+        filter: filter,
         userId: userId,
       );
 

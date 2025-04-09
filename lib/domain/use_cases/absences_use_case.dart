@@ -7,11 +7,19 @@ class AbsencesUseCase {
 
   final AbsencesRepository absencesRepository;
 
-  Future<Either<List<Absence>>> getAllAbsences() =>
-      absencesRepository.getAbsences();
-
-  Future<Either<List<Absence>>> getAbsencesByMember(int userId) =>
+  Future<Either<List<Absence>>> getAllAbsences({
+    AbsenceFilter? filter,
+  }) =>
       absencesRepository.getAbsences(
+        filter: filter,
+      );
+
+  Future<Either<List<Absence>>> getAbsencesByMember(
+    int userId, {
+    AbsenceFilter? filter,
+  }) =>
+      absencesRepository.getAbsences(
+        filter: filter,
         userId: userId,
       );
 }

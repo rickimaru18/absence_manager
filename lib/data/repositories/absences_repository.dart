@@ -11,6 +11,7 @@ class AbsencesRepository {
   String get _table => SupabaseTables.absences.name;
 
   Future<Either<List<Absence>>> getAbsences({
+    AbsenceFilter? filter,
     int? userId,
   }) {
     final String memberTable = SupabaseTables.member.name;
@@ -20,6 +21,7 @@ class AbsencesRepository {
       queryParameters: <String, dynamic>{
         'select': '*,$memberTable:$memberTable!inner(*)',
         if (userId != null) 'userId': 'eq.$userId',
+        if (filter?.hasFilter ?? false) ...filter!.toQueryParam()!,
       },
       jsonListDecoder: (JsonList jsonList) =>
           jsonList.map(Absence.fromJson).toList(),

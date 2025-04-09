@@ -15,8 +15,18 @@ void main() {
   });
 
   group('[getAllAbsences] tests', () {
+    final AbsenceFilter filter = AbsenceFilter(
+      type: AbsenceType.vacation,
+      startDate: DateTime.now(),
+      endDate: DateTime.now().add(const Duration(days: 1)),
+    );
+
     tearDown(() {
-      verify(() => absencesRepository.getAbsences()).called(1);
+      verify(
+        () => absencesRepository.getAbsences(
+          filter: filter,
+        ),
+      ).called(1);
       verifyNoMoreInteractions(absencesRepository);
     });
 
@@ -38,10 +48,17 @@ void main() {
         ),
       );
 
-      when(() => absencesRepository.getAbsences())
-          .thenAnswer((_) async => Either<List<Absence>>.l(absences));
+      when(
+        () => absencesRepository.getAbsences(
+          filter: any(
+            named: 'filter',
+          ),
+        ),
+      ).thenAnswer((_) async => Either<List<Absence>>.l(absences));
 
-      final Either<List<Absence>> result = await useCase.getAllAbsences();
+      final Either<List<Absence>> result = await useCase.getAllAbsences(
+        filter: filter,
+      );
 
       expect(result.l, absences);
     });
@@ -49,10 +66,17 @@ void main() {
     test('Failure', () async {
       const Failure failure = Failure();
 
-      when(() => absencesRepository.getAbsences())
-          .thenAnswer((_) async => Either<List<Absence>>.r(failure));
+      when(
+        () => absencesRepository.getAbsences(
+          filter: any(
+            named: 'filter',
+          ),
+        ),
+      ).thenAnswer((_) async => Either<List<Absence>>.r(failure));
 
-      final Either<List<Absence>> result = await useCase.getAllAbsences();
+      final Either<List<Absence>> result = await useCase.getAllAbsences(
+        filter: filter,
+      );
 
       expect(result.r, failure);
     });
@@ -61,9 +85,16 @@ void main() {
   group('[getAllAbsences] tests', () {
     const int memberUserId = 1;
 
+    final AbsenceFilter filter = AbsenceFilter(
+      type: AbsenceType.vacation,
+      startDate: DateTime.now(),
+      endDate: DateTime.now().add(const Duration(days: 1)),
+    );
+
     tearDown(() {
       verify(
         () => absencesRepository.getAbsences(
+          filter: filter,
           userId: memberUserId,
         ),
       ).called(1);
@@ -90,12 +121,15 @@ void main() {
 
       when(
         () => absencesRepository.getAbsences(
+          filter: any(named: 'filter'),
           userId: any(named: 'userId'),
         ),
       ).thenAnswer((_) async => Either<List<Absence>>.l(absences));
 
-      final Either<List<Absence>> result =
-          await useCase.getAbsencesByMember(memberUserId);
+      final Either<List<Absence>> result = await useCase.getAbsencesByMember(
+        memberUserId,
+        filter: filter,
+      );
 
       expect(result.l, absences);
     });
@@ -105,12 +139,15 @@ void main() {
 
       when(
         () => absencesRepository.getAbsences(
+          filter: any(named: 'filter'),
           userId: any(named: 'userId'),
         ),
       ).thenAnswer((_) async => Either<List<Absence>>.r(failure));
 
-      final Either<List<Absence>> result =
-          await useCase.getAbsencesByMember(memberUserId);
+      final Either<List<Absence>> result = await useCase.getAbsencesByMember(
+        memberUserId,
+        filter: filter,
+      );
 
       expect(result.r, failure);
     });

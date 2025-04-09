@@ -16,6 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$HomePageState {
   List<Absence> get absences;
+  AbsenceFilter? get filter;
   Failure? get error;
   bool get isLoading;
 
@@ -33,6 +34,7 @@ mixin _$HomePageState {
         (other.runtimeType == runtimeType &&
             other is HomePageState &&
             const DeepCollectionEquality().equals(other.absences, absences) &&
+            (identical(other.filter, filter) || other.filter == filter) &&
             (identical(other.error, error) || other.error == error) &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading));
@@ -40,11 +42,11 @@ mixin _$HomePageState {
 
   @override
   int get hashCode => Object.hash(runtimeType,
-      const DeepCollectionEquality().hash(absences), error, isLoading);
+      const DeepCollectionEquality().hash(absences), filter, error, isLoading);
 
   @override
   String toString() {
-    return 'HomePageState(absences: $absences, error: $error, isLoading: $isLoading)';
+    return 'HomePageState(absences: $absences, filter: $filter, error: $error, isLoading: $isLoading)';
   }
 }
 
@@ -54,7 +56,11 @@ abstract mixin class $HomePageStateCopyWith<$Res> {
           HomePageState value, $Res Function(HomePageState) _then) =
       _$HomePageStateCopyWithImpl;
   @useResult
-  $Res call({List<Absence> absences, Failure? error, bool isLoading});
+  $Res call(
+      {List<Absence> absences,
+      AbsenceFilter? filter,
+      Failure? error,
+      bool isLoading});
 }
 
 /// @nodoc
@@ -71,6 +77,7 @@ class _$HomePageStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? absences = null,
+    Object? filter = freezed,
     Object? error = freezed,
     Object? isLoading = null,
   }) {
@@ -79,6 +86,10 @@ class _$HomePageStateCopyWithImpl<$Res>
           ? _self.absences
           : absences // ignore: cast_nullable_to_non_nullable
               as List<Absence>,
+      filter: freezed == filter
+          ? _self.filter
+          : filter // ignore: cast_nullable_to_non_nullable
+              as AbsenceFilter?,
       error: freezed == error
           ? _self.error
           : error // ignore: cast_nullable_to_non_nullable
@@ -96,6 +107,7 @@ class _$HomePageStateCopyWithImpl<$Res>
 class _HomePageState implements HomePageState {
   const _HomePageState(
       {final List<Absence> absences = const <Absence>[],
+      this.filter,
       this.error,
       this.isLoading = false})
       : _absences = absences;
@@ -109,6 +121,8 @@ class _HomePageState implements HomePageState {
     return EqualUnmodifiableListView(_absences);
   }
 
+  @override
+  final AbsenceFilter? filter;
   @override
   final Failure? error;
   @override
@@ -129,6 +143,7 @@ class _HomePageState implements HomePageState {
         (other.runtimeType == runtimeType &&
             other is _HomePageState &&
             const DeepCollectionEquality().equals(other._absences, _absences) &&
+            (identical(other.filter, filter) || other.filter == filter) &&
             (identical(other.error, error) || other.error == error) &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading));
@@ -136,11 +151,11 @@ class _HomePageState implements HomePageState {
 
   @override
   int get hashCode => Object.hash(runtimeType,
-      const DeepCollectionEquality().hash(_absences), error, isLoading);
+      const DeepCollectionEquality().hash(_absences), filter, error, isLoading);
 
   @override
   String toString() {
-    return 'HomePageState(absences: $absences, error: $error, isLoading: $isLoading)';
+    return 'HomePageState(absences: $absences, filter: $filter, error: $error, isLoading: $isLoading)';
   }
 }
 
@@ -152,7 +167,11 @@ abstract mixin class _$HomePageStateCopyWith<$Res>
       __$HomePageStateCopyWithImpl;
   @override
   @useResult
-  $Res call({List<Absence> absences, Failure? error, bool isLoading});
+  $Res call(
+      {List<Absence> absences,
+      AbsenceFilter? filter,
+      Failure? error,
+      bool isLoading});
 }
 
 /// @nodoc
@@ -169,6 +188,7 @@ class __$HomePageStateCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   $Res call({
     Object? absences = null,
+    Object? filter = freezed,
     Object? error = freezed,
     Object? isLoading = null,
   }) {
@@ -177,6 +197,10 @@ class __$HomePageStateCopyWithImpl<$Res>
           ? _self._absences
           : absences // ignore: cast_nullable_to_non_nullable
               as List<Absence>,
+      filter: freezed == filter
+          ? _self.filter
+          : filter // ignore: cast_nullable_to_non_nullable
+              as AbsenceFilter?,
       error: freezed == error
           ? _self.error
           : error // ignore: cast_nullable_to_non_nullable

@@ -4,6 +4,7 @@ import 'use_cases/absences_use_case.dart';
 import 'use_cases/members_use_case.dart';
 
 export 'models/absence.dart';
+export 'models/absence_filter.dart';
 export 'models/member.dart';
 export 'use_cases/absences_use_case.dart';
 export 'use_cases/members_use_case.dart';
