@@ -35,6 +35,8 @@ void main() {
             'select': '*,$memberTable:$memberTable!inner(*)',
             'userId': 'eq.$userId',
             ...filter.toQueryParam()!,
+            'offset': 0,
+            'limit': 10,
           },
           jsonListDecoder: any(named: 'jsonListDecoder'),
         ),
@@ -71,6 +73,7 @@ void main() {
       final Either<List<Absence>> result = await repository.getAbsences(
         filter: filter,
         userId: userId,
+        offset: 0,
       );
 
       expect(result.l, absences);
@@ -90,6 +93,7 @@ void main() {
       final Either<List<Absence>> result = await repository.getAbsences(
         filter: filter,
         userId: userId,
+        offset: 0,
       );
 
       expect(result.r, failure);
