@@ -1,7 +1,10 @@
+import 'package:equatable/equatable.dart';
+
 import '../../core/core.dart';
 import '../domain.dart';
 
-class AbsenceFilter {
+// ignore: must_be_immutable
+class AbsenceFilter with EquatableMixin {
   AbsenceFilter({
     this.type,
     this.startDate,
@@ -31,4 +34,11 @@ class AbsenceFilter {
       if (endDate != null) 'endDate': 'lte.${endDate!.yyyyMMdd()}',
     };
   }
+
+  @override
+  List<Object?> get props => <Object?>[
+        type,
+        startDate,
+        endDate,
+      ];
 }
