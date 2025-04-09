@@ -22,3 +22,5 @@ A simple app to manage sickness and vacations of employees.
 - Add app icon.
 - Add localization.
 - Add CD workflows.
+- Add design for bigger screens.
+- Extract `core` as a separate package so that it can be used by multiple projects.
