@@ -3,23 +3,21 @@ import 'package:flutter/material.dart';
 
 import '../../../core.dart';
 
+typedef OnRefresh = Future<void> Function();
+typedef OnNext = Future<void> Function();
+
 class PaginatedListView extends StatefulWidget {
   const PaginatedListView({
     this.onRefresh,
     required this.onNext,
-    this.nextPageRatio = 1,
     this.hasNextPage = false,
     required this.child,
     this.loadingIndicator,
     super.key,
-  }) : assert(
-          nextPageRatio >= 0 && nextPageRatio <= 1,
-          '[nextPageRatio] should be between 0...1',
-        );
+  });
 
-  final Future<void> Function()? onRefresh;
-  final VoidCallback onNext;
-  final double nextPageRatio;
+  final OnRefresh? onRefresh;
+  final OnNext onNext;
   final bool hasNextPage;
   final SliverList child;
   final Widget? loadingIndicator;
@@ -31,61 +29,55 @@ class PaginatedListView extends StatefulWidget {
 class _PaginatedListViewState extends State<PaginatedListView> {
   final ScrollController _controller = ScrollController();
 
-  double _currentMaxScrollExtent = 0;
+  bool _isNextOngoing = false;
 
   @override
   void initState() {
     super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (_controller.position.maxScrollExtent == 0 && widget.hasNextPage) {
-        widget.onNext();
-      }
-    });
+    _controller.addListener(_onScroll);
   }
 
-  bool _onNotification(ScrollNotification notification) {
-    if (!widget.hasNextPage) {
-      return false;
+  @override
+  void dispose() {
+    _controller.removeListener(_onScroll);
+    _controller.dispose();
+    super.dispose();
+  }
+
+  Future<void> _onScroll() async {
+    if (_isNextOngoing) {
+      return;
     }
 
-    final double maxScrollExtent =
-        notification.metrics.maxScrollExtent * widget.nextPageRatio;
-
-    if (notification.metrics.pixels >= maxScrollExtent &&
-        _currentMaxScrollExtent < maxScrollExtent) {
-      _currentMaxScrollExtent = maxScrollExtent;
-      widget.onNext();
+    if (_controller.position.pixels == _controller.position.maxScrollExtent) {
+      _isNextOngoing = true;
+      await widget.onNext();
+      _isNextOngoing = false;
     }
-
-    return false;
   }
 
   @override
   Widget build(BuildContext context) {
-    return NotificationListener<ScrollNotification>(
-      onNotification: _onNotification,
-      child: CustomScrollView(
-        controller: _controller,
-        physics: const AlwaysScrollableScrollPhysics(),
-        slivers: <Widget>[
-          if (widget.onRefresh != null)
-            CupertinoSliverRefreshControl(
-              onRefresh: widget.onRefresh,
+    return CustomScrollView(
+      controller: _controller,
+      physics: const AlwaysScrollableScrollPhysics(),
+      slivers: <Widget>[
+        if (widget.onRefresh != null)
+          CupertinoSliverRefreshControl(
+            onRefresh: widget.onRefresh,
+          ),
+        widget.child,
+        if (widget.hasNextPage)
+          SliverToBoxAdapter(
+            child: Center(
+              child: widget.loadingIndicator ??
+                  const Padding(
+                    padding: EdgeInsets.all(Dimens.d12),
+                    child: CircularProgressIndicator(),
+                  ),
             ),
-          widget.child,
-          if (widget.hasNextPage)
-            SliverToBoxAdapter(
-              child: Center(
-                child: widget.loadingIndicator ??
-                    const Padding(
-                      padding: EdgeInsets.all(Dimens.d12),
-                      child: CircularProgressIndicator(),
-                    ),
-              ),
-            ),
-        ],
-      ),
+          ),
+      ],
     );
   }
 }
