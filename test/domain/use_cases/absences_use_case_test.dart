@@ -25,6 +25,7 @@ void main() {
       verify(
         () => absencesRepository.getAbsences(
           filter: filter,
+          offset: 0,
         ),
       ).called(1);
       verifyNoMoreInteractions(absencesRepository);
@@ -50,14 +51,14 @@ void main() {
 
       when(
         () => absencesRepository.getAbsences(
-          filter: any(
-            named: 'filter',
-          ),
+          filter: any(named: 'filter'),
+          offset: any(named: 'offset'),
         ),
       ).thenAnswer((_) async => Either<List<Absence>>.l(absences));
 
       final Either<List<Absence>> result = await useCase.getAllAbsences(
         filter: filter,
+        offset: 0,
       );
 
       expect(result.l, absences);
@@ -68,14 +69,14 @@ void main() {
 
       when(
         () => absencesRepository.getAbsences(
-          filter: any(
-            named: 'filter',
-          ),
+          filter: any(named: 'filter'),
+          offset: any(named: 'offset'),
         ),
       ).thenAnswer((_) async => Either<List<Absence>>.r(failure));
 
       final Either<List<Absence>> result = await useCase.getAllAbsences(
         filter: filter,
+        offset: 0,
       );
 
       expect(result.r, failure);
@@ -96,6 +97,7 @@ void main() {
         () => absencesRepository.getAbsences(
           filter: filter,
           userId: memberUserId,
+          offset: 0,
         ),
       ).called(1);
       verifyNoMoreInteractions(absencesRepository);
@@ -123,12 +125,14 @@ void main() {
         () => absencesRepository.getAbsences(
           filter: any(named: 'filter'),
           userId: any(named: 'userId'),
+          offset: any(named: 'offset'),
         ),
       ).thenAnswer((_) async => Either<List<Absence>>.l(absences));
 
       final Either<List<Absence>> result = await useCase.getAbsencesByMember(
-        memberUserId,
+        userId: memberUserId,
         filter: filter,
+        offset: 0,
       );
 
       expect(result.l, absences);
@@ -141,12 +145,14 @@ void main() {
         () => absencesRepository.getAbsences(
           filter: any(named: 'filter'),
           userId: any(named: 'userId'),
+          offset: any(named: 'offset'),
         ),
       ).thenAnswer((_) async => Either<List<Absence>>.r(failure));
 
       final Either<List<Absence>> result = await useCase.getAbsencesByMember(
-        memberUserId,
+        userId: memberUserId,
         filter: filter,
+        offset: 0,
       );
 
       expect(result.r, failure);

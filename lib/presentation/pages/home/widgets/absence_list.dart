@@ -5,6 +5,8 @@ class _AbsenceList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final HomePageVm vm = context.read<HomePageVm>();
+
     return BlocBuilder<HomePageVm, HomePageState>(
       builder: (_, HomePageState state) {
         if (state.isLoading && state.absences.isEmpty) {
@@ -12,19 +14,21 @@ class _AbsenceList extends StatelessWidget {
         } else if (state.error != null) {
           return SingleChildScrollView(
             child: TryAgainError(
-              onTryAgain: context.read<HomePageVm>().refresh,
+              onTryAgain: vm.refresh,
               error: state.error,
             ),
           );
         } else if (state.absences.isEmpty) {
           return TryAgainEmpty(
-            onRefresh: context.read<HomePageVm>().refresh,
+            onRefresh: vm.refresh,
           );
         }
 
-        return RefreshIndicator(
-          onRefresh: context.read<HomePageVm>().refresh,
-          child: ListView.builder(
+        return PaginatedListView(
+          onRefresh: vm.refresh,
+          onNext: vm.onNext,
+          hasNextPage: state.hasNextPage,
+          child: SliverList.builder(
             itemCount: state.absences.length,
             itemBuilder: (_, int index) {
               final Absence absence = state.absences[index];

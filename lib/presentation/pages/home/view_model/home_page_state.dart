@@ -11,6 +11,8 @@ abstract class HomePageState with _$HomePageState {
     @Default(<Absence>[]) List<Absence> absences,
     AbsenceFilter? filter,
     Failure? error,
+    @Default(0) int offset,
     @Default(false) bool isLoading,
+    @Default(true) bool hasNextPage,
   }) = _HomePageState;
 }

@@ -13,6 +13,8 @@ class AbsencesRepository {
   Future<Either<List<Absence>>> getAbsences({
     AbsenceFilter? filter,
     int? userId,
+    required int offset,
+    int? limit,
   }) {
     final String memberTable = SupabaseTables.member.name;
 
@@ -22,6 +24,8 @@ class AbsencesRepository {
         'select': '*,$memberTable:$memberTable!inner(*)',
         if (userId != null) 'userId': 'eq.$userId',
         if (filter?.hasFilter ?? false) ...filter!.toQueryParam()!,
+        'offset': offset,
+        'limit': limit ?? 10,
       },
       jsonListDecoder: (JsonList jsonList) =>
           jsonList.map(Absence.fromJson).toList(),

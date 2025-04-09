@@ -18,7 +18,9 @@ mixin _$HomePageState {
   List<Absence> get absences;
   AbsenceFilter? get filter;
   Failure? get error;
+  int get offset;
   bool get isLoading;
+  bool get hasNextPage;
 
   /// Create a copy of HomePageState
   /// with the given fields replaced by the non-null parameter values.
@@ -36,17 +38,26 @@ mixin _$HomePageState {
             const DeepCollectionEquality().equals(other.absences, absences) &&
             (identical(other.filter, filter) || other.filter == filter) &&
             (identical(other.error, error) || other.error == error) &&
+            (identical(other.offset, offset) || other.offset == offset) &&
             (identical(other.isLoading, isLoading) ||
-                other.isLoading == isLoading));
+                other.isLoading == isLoading) &&
+            (identical(other.hasNextPage, hasNextPage) ||
+                other.hasNextPage == hasNextPage));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType,
-      const DeepCollectionEquality().hash(absences), filter, error, isLoading);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(absences),
+      filter,
+      error,
+      offset,
+      isLoading,
+      hasNextPage);
 
   @override
   String toString() {
-    return 'HomePageState(absences: $absences, filter: $filter, error: $error, isLoading: $isLoading)';
+    return 'HomePageState(absences: $absences, filter: $filter, error: $error, offset: $offset, isLoading: $isLoading, hasNextPage: $hasNextPage)';
   }
 }
 
@@ -60,7 +71,9 @@ abstract mixin class $HomePageStateCopyWith<$Res> {
       {List<Absence> absences,
       AbsenceFilter? filter,
       Failure? error,
-      bool isLoading});
+      int offset,
+      bool isLoading,
+      bool hasNextPage});
 }
 
 /// @nodoc
@@ -79,7 +92,9 @@ class _$HomePageStateCopyWithImpl<$Res>
     Object? absences = null,
     Object? filter = freezed,
     Object? error = freezed,
+    Object? offset = null,
     Object? isLoading = null,
+    Object? hasNextPage = null,
   }) {
     return _then(_self.copyWith(
       absences: null == absences
@@ -94,9 +109,17 @@ class _$HomePageStateCopyWithImpl<$Res>
           ? _self.error
           : error // ignore: cast_nullable_to_non_nullable
               as Failure?,
+      offset: null == offset
+          ? _self.offset
+          : offset // ignore: cast_nullable_to_non_nullable
+              as int,
       isLoading: null == isLoading
           ? _self.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
+      hasNextPage: null == hasNextPage
+          ? _self.hasNextPage
+          : hasNextPage // ignore: cast_nullable_to_non_nullable
               as bool,
     ));
   }
@@ -109,7 +132,9 @@ class _HomePageState implements HomePageState {
       {final List<Absence> absences = const <Absence>[],
       this.filter,
       this.error,
-      this.isLoading = false})
+      this.offset = 0,
+      this.isLoading = false,
+      this.hasNextPage = true})
       : _absences = absences;
 
   final List<Absence> _absences;
@@ -127,7 +152,13 @@ class _HomePageState implements HomePageState {
   final Failure? error;
   @override
   @JsonKey()
+  final int offset;
+  @override
+  @JsonKey()
   final bool isLoading;
+  @override
+  @JsonKey()
+  final bool hasNextPage;
 
   /// Create a copy of HomePageState
   /// with the given fields replaced by the non-null parameter values.
@@ -145,17 +176,26 @@ class _HomePageState implements HomePageState {
             const DeepCollectionEquality().equals(other._absences, _absences) &&
             (identical(other.filter, filter) || other.filter == filter) &&
             (identical(other.error, error) || other.error == error) &&
+            (identical(other.offset, offset) || other.offset == offset) &&
             (identical(other.isLoading, isLoading) ||
-                other.isLoading == isLoading));
+                other.isLoading == isLoading) &&
+            (identical(other.hasNextPage, hasNextPage) ||
+                other.hasNextPage == hasNextPage));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType,
-      const DeepCollectionEquality().hash(_absences), filter, error, isLoading);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(_absences),
+      filter,
+      error,
+      offset,
+      isLoading,
+      hasNextPage);
 
   @override
   String toString() {
-    return 'HomePageState(absences: $absences, filter: $filter, error: $error, isLoading: $isLoading)';
+    return 'HomePageState(absences: $absences, filter: $filter, error: $error, offset: $offset, isLoading: $isLoading, hasNextPage: $hasNextPage)';
   }
 }
 
@@ -171,7 +211,9 @@ abstract mixin class _$HomePageStateCopyWith<$Res>
       {List<Absence> absences,
       AbsenceFilter? filter,
       Failure? error,
-      bool isLoading});
+      int offset,
+      bool isLoading,
+      bool hasNextPage});
 }
 
 /// @nodoc
@@ -190,7 +232,9 @@ class __$HomePageStateCopyWithImpl<$Res>
     Object? absences = null,
     Object? filter = freezed,
     Object? error = freezed,
+    Object? offset = null,
     Object? isLoading = null,
+    Object? hasNextPage = null,
   }) {
     return _then(_HomePageState(
       absences: null == absences
@@ -205,9 +249,17 @@ class __$HomePageStateCopyWithImpl<$Res>
           ? _self.error
           : error // ignore: cast_nullable_to_non_nullable
               as Failure?,
+      offset: null == offset
+          ? _self.offset
+          : offset // ignore: cast_nullable_to_non_nullable
+              as int,
       isLoading: null == isLoading
           ? _self.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
+      hasNextPage: null == hasNextPage
+          ? _self.hasNextPage
+          : hasNextPage // ignore: cast_nullable_to_non_nullable
               as bool,
     ));
   }
