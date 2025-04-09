@@ -29,6 +29,8 @@ analyzer:
       # Ignore protoc generated files
     - "dev/conductor/lib/proto/*"
     - "engine/**"
+      # Ignore part generated files
+    - "**.g.dart"
 
 formatter:
   page_width: 100

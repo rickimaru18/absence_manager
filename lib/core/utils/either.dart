@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 import '../core.dart';
 
 typedef EitherHandler<S> = void Function(S data);
@@ -9,7 +11,12 @@ class Either<T> {
 
   factory Either.r(Failure right) => Either<T>._(null, right);
 
+  @visibleForTesting
+  T? get l => _l;
   T? _l;
+
+  @visibleForTesting
+  Failure? get r => _r;
   Failure? _r;
 
   bool get isLeft => _l != null;

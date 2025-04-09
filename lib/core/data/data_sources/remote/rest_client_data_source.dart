@@ -55,6 +55,8 @@ class RestClientDataSource {
             : jsonDecoder!.call(response.data as Json),
       );
     } on DioException catch (e) {
+      result = Either<T>.r(Failure(e.message));
+    } on Exception catch (e) {
       result = Either<T>.r(Failure.fromException(e));
     }
 
