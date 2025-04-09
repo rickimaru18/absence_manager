@@ -1,0 +1,43 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "absence_manager (qa)",
+            "request": "launch",
+            "type": "dart",
+            "args": [
+                "--dart-define",
+                "SUPABASE_BASE_URL=https://venrlnlptgszuifpwadj.supabase.co/rest/v1/",
+                "--dart-define",
+                "SUPABASE_API_KEY=ADD_API_KEY_HERE",
+            ]
+        },
+        {
+            "name": "absence_manager (stage)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release",
+            "args": [
+                "--dart-define",
+                "SUPABASE_BASE_URL=https://venrlnlptgszuifpwadj.supabase.co/rest/v1/",
+                "--dart-define",
+                "SUPABASE_API_KEY=ADD_API_KEY_HERE",
+            ]
+        },
+        {
+            "name": "absence_manager",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release",
+            "args": [
+                "--dart-define",
+                "SUPABASE_BASE_URL=https://venrlnlptgszuifpwadj.supabase.co/rest/v1/",
+                "--dart-define",
+                "SUPABASE_API_KEY=ADD_API_KEY_HERE",
+            ]
+        }
+    ]
+}
