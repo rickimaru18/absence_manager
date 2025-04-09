@@ -35,6 +35,12 @@ class Absence {
   final DateTime? confirmedAt;
   final DateTime? rejectedAt;
 
+  AbsenceStatus get status => isConfirmed
+      ? AbsenceStatus.confirmed
+      : isRejected
+          ? AbsenceStatus.rejected
+          : AbsenceStatus.requested;
+
   bool get isConfirmed => confirmedAt != null;
 
   bool get isRejected => rejectedAt != null;
@@ -43,4 +49,10 @@ class Absence {
 enum AbsenceType {
   sickness,
   vacation,
+}
+
+enum AbsenceStatus {
+  requested,
+  confirmed,
+  rejected,
 }
