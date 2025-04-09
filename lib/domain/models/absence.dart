@@ -46,9 +46,13 @@ class Absence {
   bool get isRejected => rejectedAt != null;
 }
 
-enum AbsenceType {
+enum AbsenceType with DropdownItem {
   sickness,
   vacation,
+  ;
+
+  @override
+  String get dropdownText => name;
 }
 
 enum AbsenceStatus {
