@@ -4,9 +4,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../core/core.dart';
 import '../../../domain/domain.dart';
 import '../../widgets/cards/absence_card.dart';
+import '../../widgets/forms/absence_filter_form.dart';
 import 'view_model/home_page_vm.dart';
 
 export 'view_model/home_page_vm.dart';
+
+part 'widgets/absence_list.dart';
+part 'widgets/body.dart';
+part 'widgets/filter_section.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({
@@ -19,37 +24,7 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Absence Manager'),
       ),
-      body: BlocBuilder<HomePageVm, HomePageState>(
-        builder: (_, HomePageState state) {
-          if (state.isLoading && state.absences.isEmpty) {
-            return const CenterLoader();
-          } else if (state.error != null) {
-            return TryAgainError(
-              onTryAgain: context.read<HomePageVm>().refresh,
-              error: state.error,
-            );
-          } else if (state.absences.isEmpty) {
-            return TryAgainEmpty(
-              onRefresh: context.read<HomePageVm>().refresh,
-            );
-          }
-
-          return RefreshIndicator(
-            onRefresh: context.read<HomePageVm>().refresh,
-            child: ListView.builder(
-              itemCount: state.absences.length,
-              itemBuilder: (_, int index) {
-                final Absence absence = state.absences[index];
-
-                return AbsenceCard(
-                  key: ValueKey<int>(absence.id),
-                  absence: state.absences[index],
-                );
-              },
-            ),
-          );
-        },
-      ),
+      body: const _Body(),
     );
   }
 }

@@ -15,7 +15,9 @@ class HomePageVm extends AppCubit<HomePageState> {
   Future<void> getAbsences() async {
     emit(state.copyWith(isLoading: true));
 
-    final Either<List<Absence>> result = await absencesUseCase.getAllAbsences();
+    final Either<List<Absence>> result = await absencesUseCase.getAllAbsences(
+      filter: state.filter,
+    );
 
     result.handle(
       (List<Absence> l) => emit(
@@ -35,4 +37,19 @@ class HomePageVm extends AppCubit<HomePageState> {
   }
 
   Future<void> refresh() => getAbsences();
+
+  Future<void> filter(AbsenceFilter? filter) async {
+    if (state.isLoading) {
+      return;
+    }
+
+    emit(
+      state.copyWith(
+        filter: filter,
+        absences: <Absence>[],
+      ),
+    );
+
+    return getAbsences();
+  }
 }
